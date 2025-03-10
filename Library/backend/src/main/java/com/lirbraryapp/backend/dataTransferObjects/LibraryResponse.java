@@ -1,5 +1,7 @@
 package com.lirbraryapp.backend.dataTransferObjects;
 
+import java.util.List;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +19,9 @@ public class LibraryResponse {
     
     @Schema(name = "API Response Message")
     private String responseMessage;
+    
+    @Schema(name = "Book List")
+    private List bookList;
 
     @Schema(name = "Misc. account information")
     private AccountInfo accountInfo;

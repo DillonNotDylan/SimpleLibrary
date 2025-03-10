@@ -64,7 +64,7 @@ public class UserController {
 
     @Operation(
         summary = "Return a book to the library",
-        // description = "Transfers a given amount from a source account to a destination account"
+        description = "Returns 1 if book was returned, 0 if not"
     )
     @PostMapping("return")
     public LibraryResponse returnBook(@RequestBody UserRequest returnRequest) {
