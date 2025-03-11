@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lirbraryapp.backend.dataTransferObjects.LibraryResponse;
+import com.lirbraryapp.backend.dataTransferObjects.StatusRequest;
 import com.lirbraryapp.backend.dataTransferObjects.UserRequest;
 import com.lirbraryapp.backend.services.UserServices;
 
@@ -48,27 +49,27 @@ public class UserController {
         summary = "Get authorization status of account",
         description = "Returns 1 if account is authorized, 0 if not"
     )
-    @GetMapping("authorized")
-    public LibraryResponse accountAuthorized(@RequestBody UserRequest statusRequest) {
+    @PostMapping("authorized")
+    public LibraryResponse accountAuthorized(@RequestBody StatusRequest statusRequest) {
         return UserService.accountAuthorized(statusRequest);
     }
     
-    @Operation(
-        summary = "Get book from library",
-        description = "Returns 1 if book was rented, 0 if not"
-    )
-    @GetMapping("rent")
-    public LibraryResponse rentBook(@RequestBody UserRequest rentRequest) {
-        return UserService.rentBook(rentRequest);
-    }
+    // @Operation(
+    //     summary = "Get book from library",
+    //     description = "Returns 1 if book was rented, 0 if not"
+    // )
+    // @GetMapping("rent")
+    // public LibraryResponse rentBook(@RequestBody UserRequest rentRequest) {
+    //     return UserService.rentBook(rentRequest);
+    // }
 
-    @Operation(
-        summary = "Return a book to the library",
-        description = "Returns 1 if book was returned, 0 if not"
-    )
-    @PostMapping("return")
-    public LibraryResponse returnBook(@RequestBody UserRequest returnRequest) {
-        return UserService.returnBook(returnRequest);
-    }
+    // @Operation(
+    //     summary = "Return a book to the library",
+    //     description = "Returns 1 if book was returned, 0 if not"
+    // )
+    // @PostMapping("return")
+    // public LibraryResponse returnBook(@RequestBody UserRequest returnRequest) {
+    //     return UserService.returnBook(returnRequest);
+    // }
 
 }

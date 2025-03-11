@@ -12,15 +12,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AccountInfo {
 
-    @Schema(name = "User User Name")
     private String name;
 
-    @Schema(name = "User Email")
+    @Schema(name = "email")
     private String email;
     
-    @Schema(name = "User UID")
-    private String uid;
+    @Schema(name = "uid")
+    private Long uid;
     
-    @Schema(name = "User UID")
-    private Integer activeStatus;
+    @Schema(name = "is_active")
+    private Integer is_active;
 }

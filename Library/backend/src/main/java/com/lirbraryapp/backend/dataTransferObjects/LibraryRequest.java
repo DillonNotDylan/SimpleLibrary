@@ -1,5 +1,7 @@
 package com.lirbraryapp.backend.dataTransferObjects;
 
+import java.sql.Date;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -26,7 +28,7 @@ public class LibraryRequest {
 
     @Schema(name = "Book Release Date", required = false)
     @JsonProperty("Book Release Date")
-    private String bookReleaseDate;
+    private Date bookPublishedDate;
 
     @Schema(name = "Book ISBN", required = false)
     @JsonProperty("Book ISBN")
@@ -42,15 +44,15 @@ public class LibraryRequest {
 
     @Schema(name = "Book Date Rented", required = false)
     @JsonProperty("Book Date Rented")
-    private String dateRented;
+    private Date dateRented;
 
     @Schema(name = "Book Due Date", required = false)
     @JsonProperty("Book Due Date")
-    private String dueDate;
+    private Date dueDate;
 
     @Schema(name = "Book Rating", required = false)
     @JsonProperty("Book Rating")
-    private String bookRating;
+    private Double bookRating;
 
     @Schema(name = "Book Image", required = false)
     @JsonProperty("Book Image")

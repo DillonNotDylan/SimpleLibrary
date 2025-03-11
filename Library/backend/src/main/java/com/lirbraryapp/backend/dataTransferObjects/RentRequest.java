@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class RentRequest {
-    @Schema(name = "Book availability Status")
-    private String bookStatus;
+    private String email;
+    private Long bookId;
 }

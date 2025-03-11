@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.lirbraryapp.backend.dataTransferObjects.BookInfo;
 import com.lirbraryapp.backend.dataTransferObjects.LibraryRequest;
 import com.lirbraryapp.backend.dataTransferObjects.LibraryResponse;
-import com.lirbraryapp.backend.repository.Book;
+import com.lirbraryapp.backend.entity.Book;
 import com.lirbraryapp.backend.repository.BookRepository;
 import com.lirbraryapp.backend.utils.LibraryUtils;
 
@@ -44,7 +44,7 @@ public class LibraryServiceImpl implements LibraryServices {
                 .genre(book.getGenre())
                 .rating(book.getRating())
                 .datePublished(book.getDatePublished())
-                .checkedIn(book.getCheckedIn())
+                .checkedIn(book.getCheckedOut())
                 .checkedOutTo(book.getCheckedOutTo())
                 .dateRented(book.getDateRented())
                 .dueDate(book.getDueDate())
@@ -100,7 +100,7 @@ public class LibraryServiceImpl implements LibraryServices {
 
         if (libraryRequest.getCheckedOut() != null) {
             filteredBooks = filteredBooks.stream()
-                .filter(book -> book.getCheckedIn().equals(libraryRequest.getCheckedOut()))
+                .filter(book -> book.getCheckedOut().equals(libraryRequest.getCheckedOut()))
                 .collect(Collectors.toList());
         }
 
@@ -113,19 +113,19 @@ public class LibraryServiceImpl implements LibraryServices {
         }
 
         // Map the filtered books to BookInfo objects
-        List<BookInfo> bookInfoList = filteredBooks.stream()
-            .map(book -> BookInfo.builder()
-                .isbn(book.getIsbn())
+        List<LibraryRequest> bookInfoList = filteredBooks.stream()
+            .map(book -> LibraryRequest.builder()
+                .bookISBN(book.getIsbn())
                 .bookName(book.getBookName())
-                .author(book.getAuthor())
-                .genre(book.getGenre())
-                .rating(book.getRating())
-                .datePublished(book.getDatePublished())
-                .checkedIn(book.getCheckedIn())
+                .bookAuthor(book.getAuthor())
+                .bookGenre(book.getGenre())
+                .bookRating(book.getRating())
+                .bookPublishedDate(book.getDatePublished())
+                .checkedOut(book.getCheckedOut())
                 .checkedOutTo(book.getCheckedOutTo())
                 .dateRented(book.getDateRented())
                 .dueDate(book.getDueDate())
-                .imageUrl(book.getImageUrl())
+                .bookImage(book.getImageUrl())
                 .build())
             .collect(Collectors.toList());
 

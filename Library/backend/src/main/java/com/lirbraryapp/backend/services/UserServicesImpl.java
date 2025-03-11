@@ -7,6 +7,7 @@ import com.lirbraryapp.backend.repository.UserRepository;
 import com.lirbraryapp.backend.dataTransferObjects.UserRequest;
 import com.lirbraryapp.backend.dataTransferObjects.AccountInfo;
 import com.lirbraryapp.backend.dataTransferObjects.LibraryResponse;
+import com.lirbraryapp.backend.dataTransferObjects.StatusRequest;
 import com.lirbraryapp.backend.utils.AccountUtils;
 import com.lirbraryapp.backend.entity.User;
 
@@ -54,78 +55,107 @@ public class UserServicesImpl implements UserServices{
         User savedUser = userRepository.save(newUser);
 
         /**
-         * Sending user an email about the successful creation of thier account
-         */
-        // EmailDetails emailDetails = EmailDetails.builder()
-        //     .recipient(savedUser.getEmail())
-        //     .subject("ACCOUNT CREATION")
-        //     .messageBody("Congradulations! Your account has successfully been created!\nYour account details:\n"+ 
-        //             "Account User: " + savedUser.getFirstName() + " " + savedUser.getLastName() + "\n" + 
-        //             "Account Number: " + savedUser.getAccountNumber())
-        //     .build();
-        // emailService.sendEmailAlert(emailDetails);
-
-        /**
          * Reponse that is given to the user after making an API request
          */
         return LibraryResponse.builder()
             .responseCode(AccountUtils.ACCOUNT_CREATION_CODE)
             .responseMessage(AccountUtils.ACCOUNT_CREATION_MESSAGE)
             .accountInfo(AccountInfo.builder()
-                // .accountBalance(savedUser.getAccountBalance())
-                // .accountNumber(savedUser.getAccountNumber())
-                // .accountName(savedUser.getFirstName() + " " + savedUser.getLastName())
+                .name(savedUser.getFirstName() + " " + savedUser.getLastName())
+                .email(savedUser.getEmail())
+                .uid(savedUser.getUid())
+                .is_active(savedUser.getIsActive())
                 .build()
             )   
             .build();
     }
 
     @Override
-    public LibraryResponse accountAuthorized(UserRequest userRequest) {
+    public LibraryResponse accountAuthorized(StatusRequest userRequest) {
 
         /**
          * Check if provided account number exists
          */
-        // boolean exists = userRepository.existsByAccountNumber(userRequest.getAccountNumber());
-        // if (!exists) {
-        //     return BankResponse.builder()
-        //         .responseCode(AccountUtils.ACCOUNT_NOT_EXIST_CODE)
-        //         .responseMessage(AccountUtils.ACCOUNT_NOT_EXIST_MESSAGE)
-        //         .accountInfo(null)
-        //         .build();
-        // }
+        boolean exists = userRepository.existsByEmail(userRequest.getEmail());
+        if (!exists) {
+            return LibraryResponse.builder()
+                .responseCode(AccountUtils.ACCOUNT_NOT_EXIST_CODE)
+                .responseMessage(AccountUtils.ACCOUNT_NOT_EXIST_MESSAGE)
+                .accountInfo(null)
+                .build();
+        }
 
         User foundUser = userRepository.findByEmail(userRequest.getEmail());
 
-        return LibraryResponse.builder()
-            .responseCode(AccountUtils.ACCOUNT_FOUND_CODE)
-            .responseMessage(AccountUtils.ACCOUNT_FOUND_MESSAGE)
-            .accountInfo(AccountInfo.builder()
-            .activeStatus(foundUser.getIsActive())
-            // .accountName(foundUser.getFirstName() + " " + foundUser.getLastName())
-                .build())
-            .build();
+        if(foundUser.getIsActive() == 0) {
+            return LibraryResponse.builder()
+                .responseCode(AccountUtils.ACCOUNT_NOT_AUTHORIZED_CODE)
+                .responseMessage(AccountUtils.ACCOUNT_NOT_AUTHORIZED_MESSAGE)
+                .accountInfo(AccountInfo.builder()
+                    .name(foundUser.getFirstName() + " " + foundUser.getLastName())
+                    .email(foundUser.getEmail())
+                    .uid(foundUser.getUid())
+                    .is_active(foundUser.getIsActive())
+                    .build()
+                )
+                .build();
+        }
 
+        else {
+            return LibraryResponse.builder()
+                .responseCode(AccountUtils.ACCOUNT_AUTHORIZED_CODE)
+                .responseMessage(AccountUtils.ACCOUNT_AUTHORIZED_MESSAGE)
+                .accountInfo(AccountInfo.builder()
+                    .name(foundUser.getFirstName() + " " + foundUser.getLastName())
+                    .email(foundUser.getEmail())
+                    .uid(foundUser.getUid())
+                    .is_active(foundUser.getIsActive())
+                    .build()
+                )
+                .build();
+        }
     }
     
-    @Override
-    public LibraryResponse rentBook(UserRequest userRequest) {
+    // @Override
+    // public LibraryResponse rentBook(UserRequest userRequest) {
 
-        User foundUser = userRepository.findByEmail(userRequest.getEmail());
+    //     User foundUser = userRepository.findByEmail(userRequest.getEmail());
 
-        return LibraryResponse.builder()
-            .responseCode(AccountUtils.ACCOUNT_FOUND_CODE)
-            .responseMessage(AccountUtils.ACCOUNT_FOUND_MESSAGE)
-            .accountInfo(AccountInfo.builder()
-            .activeStatus(foundUser.getIsActive())
-            // .accountName(foundUser.getFirstName() + " " + foundUser.getLastName())
-                .build())
-            .build();
+    //     return LibraryResponse.builder()
+    //         .responseCode(AccountUtils.ACCOUNT_FOUND_CODE)
+    //         .responseMessage(AccountUtils.ACCOUNT_FOUND_MESSAGE)
+    //         .accountInfo(AccountInfo.builder()
+    //             .name(foundUser.getFirstName() + " " + foundUser.getLastName())
+    //             .email(foundUser.getEmail())
+    //             .uid(foundUser.getUid())
+    //             .is_active(foundUser.getIsActive())
+    //             .build()
+    //         )
+    //         .build();
 
-    }
+    // }
+    
+    // @Override
+    // public LibraryResponse returnBook(UserRequest userRequest) {
+
+    //     User foundUser = userRepository.findByEmail(userRequest.getEmail());
+
+    //     return LibraryResponse.builder()
+    //         .responseCode(AccountUtils.ACCOUNT_FOUND_CODE)
+    //         .responseMessage(AccountUtils.ACCOUNT_FOUND_MESSAGE)
+    //         .accountInfo(AccountInfo.builder()
+    //             .name(foundUser.getFirstName() + " " + foundUser.getLastName())
+    //             .email(foundUser.getEmail())
+    //             .uid(foundUser.getUid())
+    //             .is_active(foundUser.getIsActive())
+    //             .build()
+    //         )
+    //         .build();
+
+    // }
     
     @Override
-    public LibraryResponse returnBook(UserRequest userRequest) {
+    public LibraryResponse booksInPossession(UserRequest userRequest) {
 
         User foundUser = userRepository.findByEmail(userRequest.getEmail());
 
@@ -133,9 +163,12 @@ public class UserServicesImpl implements UserServices{
             .responseCode(AccountUtils.ACCOUNT_FOUND_CODE)
             .responseMessage(AccountUtils.ACCOUNT_FOUND_MESSAGE)
             .accountInfo(AccountInfo.builder()
-            .activeStatus(foundUser.getIsActive())
-            // .accountName(foundUser.getFirstName() + " " + foundUser.getLastName())
-                .build())
+                .name(foundUser.getFirstName() + " " + foundUser.getLastName())
+                .email(foundUser.getEmail())
+                .uid(foundUser.getUid())
+                .is_active(foundUser.getIsActive())
+                .build()
+            )
             .build();
 
     }

@@ -1,4 +1,4 @@
-package com.lirbraryapp.backend.repository;
+package com.lirbraryapp.backend.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,13 +38,13 @@ public class Book {
     private String genre;
 
     @Column(name = "rating")
-    private double rating;
+    private Double rating;
 
     @Column(name = "date_published")
     private Date datePublished;
 
     @Column(name = "checked_in")
-    private Integer checkedIn;
+    private Integer checkedOut;
 
     @Column(name = "checked_out_to")
     private String checkedOutTo;

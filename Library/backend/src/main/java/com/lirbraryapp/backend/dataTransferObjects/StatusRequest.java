@@ -12,9 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class StatusRequest {
-    @Schema(name = "User Account Email")
+    @Schema(name = "email")
     private String email;
-
-    @Schema(name = "User Account Status")
-    private String status;
 }

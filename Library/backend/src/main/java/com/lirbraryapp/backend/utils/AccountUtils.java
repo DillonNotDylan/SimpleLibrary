@@ -15,6 +15,12 @@ public class AccountUtils {
     public static final String ACCOUNT_FOUND_CODE = "004";
     public static final String ACCOUNT_FOUND_MESSAGE = "User account has been found.";
 
+    public static final String ACCOUNT_AUTHORIZED_CODE = "005";
+    public static final String ACCOUNT_AUTHORIZED_MESSAGE = "Congrats! This account has been authorized!";
+
+    public static final String ACCOUNT_NOT_AUTHORIZED_CODE = "006";
+    public static final String ACCOUNT_NOT_AUTHORIZED_MESSAGE = "Sorry, this account has not yet been authorized.";
+
     public static String generateAccountNumber() {
         /**
          * current year + randomSixDigitsBetweenMinAndMax

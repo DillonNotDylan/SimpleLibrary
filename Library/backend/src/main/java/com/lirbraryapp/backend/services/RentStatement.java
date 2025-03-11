@@ -1,6 +1,6 @@
 package com.lirbraryapp.backend.services;
 
-import com.lirbraryapp.backend.entity.Books;
+import com.lirbraryapp.backend.entity.Book;
 import com.lirbraryapp.backend.repository.RentRepository;
 
 import java.util.List;
@@ -12,9 +12,9 @@ public class RentStatement {
 
     private RentRepository rentRepository;
 
-    public List<Books> generateStatement(String email) throws FileNotFoundException, DocumentException {
+    public List<Book> generateStatement(String email) throws FileNotFoundException, DocumentException {
     
-        List<Books> rentList = rentRepository.findAll().stream()
+        List<Book> rentList = rentRepository.findAll().stream()
             .filter(transaction -> transaction.getCheckedOutTo().equals(email))
             .toList();
         return rentList;

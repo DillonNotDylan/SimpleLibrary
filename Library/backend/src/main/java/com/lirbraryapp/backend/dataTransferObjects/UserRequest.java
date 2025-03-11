@@ -24,8 +24,8 @@ public class UserRequest {
     @Schema(name = "User Account State")
     private String state;
     
-    @Schema(name = "User Account Status")
-    private String status;
+    @Schema(name = "User Account Active Status")
+    private Integer active;
 
     @Schema(name = "User Account Email")
     private String email;
